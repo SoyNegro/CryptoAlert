@@ -7,9 +7,8 @@ import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.serialization.Serializable
+import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.coroutine
-import org.litote.kmongo.eq
-import org.litote.kmongo.or
 import org.litote.kmongo.reactivestreams.KMongo
 
 class DB {
@@ -36,19 +35,23 @@ suspend fun getCoinPrice(name: String): Map<String, Map<String, Double>> {
     return jsonClient.get(urlString = endpoint + name + vs)
 }
 
-suspend fun nameInList(nameOrSymbol: String): String {
-    println(nameOrSymbol)
+suspend fun nameInList(nameOrSymbol: String): String? {
     return DB.coinCollection.findOne(
         or(
             Coin::id eq nameOrSymbol,
             Coin::name eq nameOrSymbol, Coin::symbol eq nameOrSymbol
         )
-    )?.id.toString()
+    )?.id
 }
 
-suspend fun existUserAlert(userId:Long, coinId:String):Boolean{
-    return DB.userAlertCollection.findOne(or(UserAlert::coinId eq coinId,
-        UserAlert::userId eq userId))!=null
+suspend fun existUserAlert(userId: Long, coinId: String, price: Double = 0.0): Boolean {
+    return DB.userAlertCollection.findOne(
+        and(
+            UserAlert::coinId eq coinId,
+            UserAlert::userId eq userId,
+            or(UserAlert::price eq price)
+        )
+    ) != null
 }
 
 suspend fun justOnce(): List<Coin> {
