@@ -12,7 +12,10 @@ object BotCommand{
     val price = initCommandChar + "price"
     val alert = initCommandChar + "alert"
     val daily = initCommandChar + "daily"
+    val listalert = initCommandChar + "listalert"
+    val listdaily = initCommandChar + "listdaily"
     val deleteAlert = initCommandChar + "deletealert"
     val deleteDaily = initCommandChar + "deletedaily"
 }
+
 
