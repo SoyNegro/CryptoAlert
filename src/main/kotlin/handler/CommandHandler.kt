@@ -1,6 +1,7 @@
 package handler
 
 
+import alert.DailyAlert
 import alert.UserAlert
 import api.*
 import configurer.BotCommand
@@ -8,9 +9,12 @@ import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.eq
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Message
+import java.time.LocalTime
 
 
 class CommandHandler {
+
+    val COMMON_REPLY = "Some parameters arent right. Do check them please"
 
     fun commandStrategy(message: Message): SendMessage {
         return when (message.getCommand()) {
@@ -69,20 +73,21 @@ class CommandHandler {
 
     private fun onAlertCommand(message: Message): SendMessage {
         val price = message.getSecondMessageParam().toDoubleOrNull()
-        var text = "Some parameters arent right. Do check them please"
+        val userId = message.from.id
+        var text = COMMON_REPLY
         runBlocking {
             val coinId = nameInList(message.getFirstMessageParam())
             if (coinId != null && price != null) {
                 if (price > 0) {
-                    text = if (!existUserAlert(message.from.id, coinId, price)) {
+                    text = if (!existUserAlert(userId, coinId, price)) {
                         DB.userAlertCollection.insertOne(
                             UserAlert(
-                                userId = message.from.id,
+                                userId = userId,
                                 price = price,
                                 coinId = coinId
                             )
                         )
-                        "Alert create for $coinId with price $price"
+                        "Alert created for $coinId with price $price"
                     } else "This alert already exist"
                 }
             }
@@ -91,12 +96,35 @@ class CommandHandler {
     }
 
     private fun onDailyCommand(message: Message): SendMessage {
-        return sendMessageBuilding(message.chatId.toString(), "Incoming")
+        var text = COMMON_REPLY
+        val coinId: String?
+        val userId = message.from.id
+        val localTime = try{
+            LocalTime.parse(message.getSecondMessageParam())
+        } catch (e: Exception){
+            LocalTime.now()
+        }
+        runBlocking {
+            coinId = nameInList(message.getFirstMessageParam())
+            if (coinId!=null){
+                text = if (!existDailyAlert(userId,coinId)){
+                    DB.dailyAlert.insertOne(
+                        DailyAlert(
+                            coinId = coinId,
+                            userId = userId,
+                            localTime = localTime
+                        )
+                   )
+                    "Daily Alert for $coinId at $localTime created"
+                } else "Daily alert for $coinId already exist"
+            }
+        }
+
+        return sendMessageBuilding(message.chatId.toString(), text)
     }
 
     private fun onDeleteAlertCommand(message: Message): SendMessage {
-        var text = "Some parameters arent right or alert doesnt exist." +
-                " Check spelling or /listalert please"
+        var text = COMMON_REPLY
         val coinId: String?
         val price = message.getSecondMessageParam()
         runBlocking {
@@ -122,8 +150,23 @@ class CommandHandler {
     }
 
     private fun onDeleteDailyCommand(message: Message): SendMessage {
+        var text = COMMON_REPLY
+        val coinId: String?
+        runBlocking {
+            coinId = nameInList(message.getFirstMessageParam())
+            if (coinId != null) {
+                text = if (existDailyAlert(message.from.id, coinId)) {
 
-        return sendMessageBuilding(message.chatId.toString(), "Incoming")
+                    DB.dailyAlert.deleteOne(
+                        DailyAlert::userId eq message.from.id,
+                        DailyAlert::coinId eq coinId
+                    )
+                    "Daily Alert for $coinId deleted"
+                } else "Not Daily Alert for ${message.getFirstMessageParam()}"
+            }
+        }
+
+        return sendMessageBuilding(message.chatId.toString(), text)
 
     }
 
@@ -140,8 +183,8 @@ fun Message.getCommand() = text.split(" ")[0]
 
 fun Message.wordsCount() = text.split(" ").size
 
-fun Message.getFirstMessageParam(): String = if (text.split(" ").size > 1) text.split(" ")[1] else ""
+fun Message.getFirstMessageParam(): String = if (text.split(" ").size > 1) text.split(" ")[1].toLowerCase() else ""
 
-fun Message.getSecondMessageParam(): String = if (text.split(" ").size > 2) text.split(" ")[2] else ""
+fun Message.getSecondMessageParam(): String = if (text.split(" ").size > 2) text.split(" ")[2].toLowerCase() else ""
 
 fun sendMessageBuilding(id: String, text: String): SendMessage = SendMessage.builder().chatId(id).text(text).build()
