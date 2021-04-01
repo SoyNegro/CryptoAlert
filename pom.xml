@@ -80,7 +80,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.thedarksideofcode.bot</mainClass>
+                            <mainClass>com.thedarksideofcode.BotKt</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
