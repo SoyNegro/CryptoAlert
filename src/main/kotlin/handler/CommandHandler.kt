@@ -63,10 +63,10 @@ class CommandHandler {
         return sendMessageBuilding(
             message.chatId.toString(),
             "Halp!, Halp!...Kidding. You can use /price coin e.g" +
-                    "{/price btc or /price Bitcoin} to retrieve current coin price.\n" +
-                    "You can use /alert coin price to create and alert for you in case " +
-                    "coin reach such price. e.g /alert btc 40000.\n" +
-                    "You can use /daily coin hour to create a daily reminder about a coin price."
+                    "{/p btc or /p Bitcoin} to retrieve current coin price.\n" +
+                    "You can use {/al coin or /ah coin} price to create an alert for you in case " +
+                    "coin price goes lower or higher respectively. e.g /al btc 40000 alert if btc price goes" +
+                    "below $40000, hopefully so i can buy." 
         )
 
     }
