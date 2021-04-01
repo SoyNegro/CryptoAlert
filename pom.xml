@@ -70,33 +70,8 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
-            <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>appassembler-maven-plugin</artifactId>
-            <version>1.1.1</version>
-            <configuration>
-            <assembleDirectory>target</assembleDirectory>
-            <programs>
-            <program>
-            <mainClass>com.thedarksideofcode.Bot</mainClass>
-            <name>Bot</name>
-            </program>
-            </programs>
-            </configuration>
-            <executions>
-            <phase>package</phase>
-            <goals>
-            <goal>
-            assemble
-            <goal>
-            </goals>
-            <execution
-            ></execution>
-            </executions
-            </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
