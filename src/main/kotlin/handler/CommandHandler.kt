@@ -255,8 +255,7 @@ class CommandHandler {
                     "Anyways if you feel generous you can send some" +
                     "\n TRX - TFBJxnB7hyCuXhBwbBomiRFMuj9reKMhGA" +
                     "\n or maybe some btc?? " +
-                    "\n SegWit - 3Bp8rKwahuieL5s9maEgB11dX1c72Y2G68 " +
-                    "\n Legacy - 1K373wy5sdpZnA4UEhX96jTQZBU5LVrM18"
+                    "\n bc1q5m4mmkzm9trpmsd605rhmc8t4dvfwqdetadv2u" 
         )
     }
 
