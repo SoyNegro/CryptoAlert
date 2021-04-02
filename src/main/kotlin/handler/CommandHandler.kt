@@ -66,7 +66,7 @@ class CommandHandler {
                     "{/p btc or /p Bitcoin} to retrieve current coin price.\n" +
                     "You can use {/al coin or /ah coin} price to create an alert for you in case " +
                     "coin price goes lower or higher respectively. e.g /al btc 40000 alert if btc price goes" +
-                    "below $40000, hopefully so i can buy." 
+                    "below $40000, hopefully so i can buy."
         )
 
     }
@@ -238,11 +238,14 @@ class CommandHandler {
 
     private fun onDisclaimerCommand(message: Message): SendMessage {
         return sendMessageBuilding(
-            message.chatId.toString(), "Just to say, i dont own the bot profile picture. " +
-                    "Nor do i vouch for the data being credible, you  may look at <a href='coingecko.com'>Coingecko</a> or" +
-                    "<a href='cryptocompare.com'>Cryptocompare</a> for those. Also alert feature may between 30s-1min delay." +
-                    "Also since i am poor, and cuban. Cuban! The bot use free services like <a href='heroku.com'>Heroku</a>" +
-                    "and the free api from <a href='cryptocompare.com'>Cryptocompare</a>. So dont fret if the bot stop working someday."
+            message.chatId.toString(), "Just wanted to say, i dont own the bot profile picture. " +
+                    "\n Nor do i vouch for the data being credible, you  may look at <a href='coingecko.com'>Coingecko</a> or" +
+                    "<a href='cryptocompare.com'>Cryptocompare</a> for that." +
+                    "\n Also 'alert' feature may have between 30s to 1min delay." +
+                    "\n And since i am poor, and cuban. And Cuban! The bot use free services " +
+                    "like <a href='heroku.com'>Heroku</a> and the free api from " +
+                    "<a href='cryptocompare.com'>Cryptocompare</a>. " +
+                    "So dont fret if the bot stop working someday."
         )
     }
 
