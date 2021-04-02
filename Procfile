@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.thedarksideofcode.BotKt
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* BotKt
