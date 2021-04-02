@@ -1,1 +1,1 @@
-web: java -jar target/*.jar BotKt
+web: java -jar target/*.jar
