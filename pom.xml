@@ -17,7 +17,7 @@
         <ktor_version>1.4.0</ktor_version>
         <kotlin_version>1.4.30</kotlin_version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
-        <main.class>com.thedarksideofcode.BotKt</main.class>
+        <main.class>BotKt</main.class>
     </properties>
 
     <repositories>
