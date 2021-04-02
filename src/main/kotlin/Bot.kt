@@ -9,7 +9,7 @@ fun main(args: Array<String>){
     runBlocking{
        val c = async{ bot.checkUserAlert() }
        //val u = async{ bot.checkDailyAlert() }
-
+       println("Ea")  
     }
 
 }
