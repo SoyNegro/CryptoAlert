@@ -14,7 +14,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 
 class DB {
     companion object {
-        val client = KMongo.createClient().coroutine
+        val client = KMongo.createClient(System.getenv("MONGODB_URI")).coroutine
         val database = client.getDatabase("coinbase")
         val coinCollection = database.getCollection<CoinGecko>()
         val userAlertCollection = database.getCollection<UserAlert>()
