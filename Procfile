@@ -1,1 +1,1 @@
-web: java  -jar target/*.jar -Dserver.port=$PORT
+web: java  -jar target/*.jar -Dserver.port=8080
