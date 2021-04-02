@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency * BotKt
+web: java -jar target/*.jar
