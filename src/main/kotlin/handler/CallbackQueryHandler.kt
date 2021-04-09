@@ -17,7 +17,8 @@ class CallbackQueryHandler {
             val coinGecko = nameInList(callData)
             val c = getCoinGeckoPrice(callData)
             text = "Current ${coinGecko?.name} price in usd is $" + "${c[coinGecko?.id]?.get("usd")}" +
-                    "\n Search powered by <a href = 'https://coingecko.com'>Coingecko</a>"
+                    "\n Search powered by <a href = 'https://coingecko.com'>Coingecko</a> at"+LocalTime.now().format(
+                DateTimeFormatter.ofPattern("HH:mm:ss"))
 
         }
         val editMessageText = EditMessageText.builder()
