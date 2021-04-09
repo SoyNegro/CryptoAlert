@@ -7,6 +7,8 @@ import kotlinx.coroutines.runBlocking
 import org.telegram.telegrambots.meta.api.methods.ParseMode
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class CallbackQueryHandler {
 
@@ -17,7 +19,8 @@ class CallbackQueryHandler {
             val coinGecko = nameInList(callData)
             val c = getCoinGeckoPrice(callData)
             text = "Current ${coinGecko?.name} price in usd is $" + "${c[coinGecko?.id]?.get("usd")}" +
-                    "\n Search powered by <a href = 'https://coingecko.com'>Coingecko</a> at"+LocalTime.now().format(
+                    "\n Search powered by <a href = 'https://coingecko.com'>Coingecko</a>." +
+                    "\n Updated at "+LocalTime.now().format(
                 DateTimeFormatter.ofPattern("HH:mm:ss"))
 
         }
