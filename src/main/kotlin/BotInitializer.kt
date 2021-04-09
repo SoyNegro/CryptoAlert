@@ -1,22 +1,30 @@
 import alert.UserAlert
 import api.DB
+import api.getCoinGeckoPrice
 import api.getCryptoCompareListPrice
+import api.nameInList
 import configurer.BotConfigurer
 import handler.CommandHandler
 import handler.defaultReply
 import handler.sendMessageBuilding
 import handler.unknownMessage
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import main.kotlin.handler.CallbackQueryHandler
+import main.kotlin.handler.InlineQueryHandler
 import org.litote.kmongo.eq
 import org.litote.kmongo.gte
 import org.litote.kmongo.lte
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 
 class CryptoAlertBot(
-    private val commandHandler: CommandHandler = CommandHandler()
+    private val commandHandler: CommandHandler = CommandHandler(),
+    private  val callbackQueryHandler: CallbackQueryHandler = CallbackQueryHandler(),
+    private val inlineQueryHandler: InlineQueryHandler = InlineQueryHandler()
 ) : TelegramLongPollingBot() {
 
     override fun getBotToken() = BotConfigurer.botToken
@@ -24,17 +32,36 @@ class CryptoAlertBot(
     override fun getBotUsername() = BotConfigurer.botName
 
     override fun onUpdateReceived(update: Update) {
-        when (update.hasMessage()) {
-            update.message.isCommand -> caughtMessage(
-                commandHandler.commandStrategy(
-                    update.message
+
+        when {
+            update.hasCallbackQuery() -> {
+                try{execute(callbackQueryHandler.onPriceCallbackQuery(update.callbackQuery))}
+                catch (e: TelegramApiException) {
+                    e.printStackTrace()
+                }
+            }
+            update.hasInlineQuery() -> {
+                if (update.inlineQuery.query.isNotEmpty()){
+                    try{execute(inlineQueryHandler.onPriceInlineQuery(update.inlineQuery))}
+                    catch (e: TelegramApiException) {
+                        e.printStackTrace()
+                    }
+                }
+             else return
+            }
+            else -> when (update.hasMessage()) {
+                update.message.isCommand -> caughtMessage(
+                    commandHandler.commandStrategy(
+                        update.message
+                    )
                 )
-            )
-            update.message.hasText() -> caughtMessage(
-                update.message.defaultReply()
-            )
-            else -> caughtMessage(update.message.unknownMessage())
+                update.message.hasText() -> caughtMessage(
+                    update.message.defaultReply()
+                )
+                else -> caughtMessage(update.message.unknownMessage())
+            }
         }
+
     }
 
     private fun caughtMessage(sendMessage: SendMessage) {
