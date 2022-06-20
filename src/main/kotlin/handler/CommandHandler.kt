@@ -183,10 +183,8 @@ class CommandHandler {
     private fun onDonateCommand(message: Message): SendMessage {
         return sendMessageBuilding(
             message.chatId.toString(), "What do i even waste time." +
-                    "Anyways if you feel generous you can send some" +
-                    "\n TRX - TFBJxnB7hyCuXhBwbBomiRFMuj9reKMhGA" +
-                    "\n or maybe some btc?? " +
-                    "\n 3AWvyMbfoV9bATLiZ63WQ5SPMnFmQPMQtg"
+                    "Anyways if you feel generous you can send some treats" +
+                    "\n 0xd2Faf7Dffa91ACdD3826C947eAb09e7bF80bD7dF"
         )
     }
 
