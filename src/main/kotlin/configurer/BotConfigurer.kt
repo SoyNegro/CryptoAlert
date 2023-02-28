@@ -2,7 +2,7 @@ package configurer
 
 object BotConfigurer{
     const val botName = "btcpursuerbot"
-    const val botToken = "1719170423:AAFUUd3BZI4Scii0dYkBMo4kK3Ed03VHY1o"
+    val botToken: String? = System.getenv("BOT_TOKEN")
 }
 
 object BotCommand{
