@@ -28,7 +28,7 @@ data class CoinGecko(var id: String, val symbol:String,val name: String,)
 val coinGeckoEndpoint = "https://api.coingecko.com/api/v3/simple/price?ids="
 val coinGeckoApiOptions = "&vs_currencies=usd&include_24hr_change=true"
 val cryptoCompareApi = "https://min-api.cryptocompare.com/data/pricemulti?fsyms="
-val cryptoCompareApiKey = "0e5bf504e0aeb598bbcf92aaa9503bc8c88edea178161bd87ae17133268ca726"
+val cryptoCompareApiKey = System.getenv("Crypto_API")
 val cryptoCompareOpt = "&tsyms=USD&api_key="
 val jsonClient = HttpClient {
     install(JsonFeature) { serializer = JacksonSerializer() }
